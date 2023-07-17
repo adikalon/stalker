@@ -1,6 +1,7 @@
 # STALKER (WIP) :
 
 License for code: MIT
+
 License for Texture/Model : CC-by-SA 4.0
 
 

@@ -9,7 +9,7 @@ mobs:register_mob("stalker:stalker", {
 	attack_type = "dogfight",
 	pathfinding = true,
 	--specific_attack = {"player", "mobs_npc:npc"},
-	reach = 5,
+	reach = 2,
 	damage = 15,
 	hp_min = 30,
 	hp_max = 30,
@@ -57,18 +57,17 @@ mobs:register_mob("stalker:stalker", {
 	},
 		
 
-     do_custom = function(self, dtime) 
-     			
-
-        		local pos_front = vector.add(self.object:get_pos(), minetest.yaw_to_dir(self.object:get_yaw()))
-				local pos_above = vector.add(self.object:get_pos(), {x = 0, y = 2, z = 0})
-				local node_front = minetest.get_node_or_nil(pos_front)
-				local node_above = minetest.get_node_or_nil(pos_above)
-
-				if (node_front and node_front.name == "air") or (node_above and node_above.name ~= "air") then
-			       self.object:set_animation({x=80, y=100},15, 0, true)
+    do_custom = function(self, dtime)
+        -- Verificar se há um nó específico à frente da entidade
+        local pos = self.object:get_pos()
+        local dir = self.object:get_velocity():normalize()
+        local node_pos = vector.round(vector.add(pos, vector.multiply(dir, 1.5)))
+        local node = minetest.get_node_or_nil(node_pos)
+        
+        if node and node.name ~= "air" then
+            self.object:set_animation({x=80, y=100},15, 0, true)
 			       self.object:set_properties({
-            	   collisionbox = {-0.4, -0.5, -0.4, 0.4, 0.3, 0.4},
+            	   collisionbox = {-0.4, -0.5, -0.4, 0.4, 0.1, 0.4},
         
         			})
 
@@ -79,10 +78,7 @@ mobs:register_mob("stalker:stalker", {
             	   	collisionbox = {-0.4, -0.5, -0.4, 0.4, 1.3, 0.4},
         
         			})
-
-				end
-
-        
+        end
     end,
 
 })

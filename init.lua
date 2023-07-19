@@ -9,26 +9,26 @@ mobs:register_mob("stalker:stalker", {
 	attack_type = "dogfight",
 	pathfinding = true,
 	--specific_attack = {"player", "mobs_npc:npc"},
-	reach = 2,
+	reach = 3,
 	damage = 15,
 	hp_min = 30,
 	hp_max = 30,
 	armor = 80,
-	collisionbox = {-0.4, -0.5, -0.4, 0.4, 1.3, 0.4},
+	collisionbox = {-0.4, -0.5, -0.4, 0.4, 1.8, 0.4},
 	visual = "mesh",
 	mesh = "stalker.b3d",
 	visual_size = {x = 9, y = 9},
 	textures = {
 		{"stalker.png"},
 	},
+	glow=2,
 	makes_footstep_sound = true,
 	sounds = {
 		random = "monster1",
 	},
-	walk_velocity = 4,
-	run_velocity = 6,
-	view_range = 45,
-	jump = true,
+	walk_velocity = 2,
+	run_velocity = 4,
+	view_range = 55,
 	floats = 0,
 	knock_back = false,
 	fall_damage = 0,
@@ -42,7 +42,7 @@ mobs:register_mob("stalker:stalker", {
 	lava_damage = 0,
 	light_damage = 0,
 	fear_height = 4,
-	jump_height = 5,
+	jump_height = 12,
 	animation = {
 		speed_normal = 15,
 		speed_run = 15,
@@ -51,7 +51,7 @@ mobs:register_mob("stalker:stalker", {
 		walk_start = 30,
 		walk_end = 50,
 		run_start = 60,
-		run_end = 70,
+		run_end = 80,
 		--punch_start = 0,
 		--punch_end = 0,
 	},
@@ -61,23 +61,37 @@ mobs:register_mob("stalker:stalker", {
         -- Verificar se há um nó específico à frente da entidade
         local pos = self.object:get_pos()
         local dir = self.object:get_velocity():normalize()
-        local node_pos = vector.round(vector.add(pos, vector.multiply(dir, 1.5)))
+
+        local node_pos = vector.round(vector.add(pos, vector.multiply(dir, 1)))
+        local pos_above = vector.add(self.object:get_pos(), {x = 0, y = 2, z = 0})
+
         local node = minetest.get_node_or_nil(node_pos)
+        local node_above = minetest.get_node_or_nil(pos_above)
+
         
-        if node and node.name ~= "air" then
-            self.object:set_animation({x=80, y=100},15, 0, true)
-			       self.object:set_properties({
-            	   collisionbox = {-0.4, -0.5, -0.4, 0.4, 0.1, 0.4},
-        
-        			})
+			        if (node and node.name ~= "air")  or (node_above and node_above.name ~= "air") then
+
+			        	minetest.after(0.5, function()
+					             --self.object:set_animation({x=100, y=110},25, 0, true)
+					             mobs:set_animation(self, "run")
+								       self.object:set_properties({
+					            	   collisionbox = {-0.4, -0.5, -0.4, 0.4, 0.4, 0.4},
+					        
+					        			})
+
+						     end)
 
 			    else
 
-			    	mobs:set_animation(self, "run")
-			    	self.object:set_properties({
-            	   	collisionbox = {-0.4, -0.5, -0.4, 0.4, 1.3, 0.4},
-        
-        			})
+						    	minetest.after(0.5, function()
+								    	mobs:set_animation(self, "walk")
+								    	self.object:set_properties({
+					            	   	collisionbox = {-0.4, -0.5, -0.4, 0.4, 1.8, 0.4},
+					        
+					        			})
+
+						    	  end)
+
         end
     end,
 
@@ -122,6 +136,6 @@ if minetest.get_modpath("default") ~= nil then
 
 -- ======== EGG : ==================================================================================
 
-mobs:register_egg("stalker:stalker", "Stalker", "default_stone.png", 0)
+mobs:register_egg("stalker:stalker", "Stalker", "stalker_egg.png", 0)
 
 

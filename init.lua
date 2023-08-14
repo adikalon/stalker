@@ -21,7 +21,7 @@ mobs:register_mob("stalker:stalker", {
 	textures = {
 		{"stalker.png"},
 	},
-	glow=2,
+	glow=4,
 	makes_footstep_sound = true,
 	sounds = {
 		random = "monster1",
@@ -62,10 +62,9 @@ mobs:register_mob("stalker:stalker", {
         local pos = self.object:get_pos()
         local dir = self.object:get_velocity():normalize()
 
-        local node_pos = vector.round(vector.add(pos, vector.multiply(dir, 1)))
-        local pos_above = vector.add(self.object:get_pos(), {x = 0, y = 2, z = 0})
-
+        local node_pos = vector.round(vector.add(pos, vector.multiply(dir, 1)))  
         local node = minetest.get_node_or_nil(node_pos)
+        local pos_above = vector.add(self.object:get_pos(), {x = 0, y = 2, z = 0})
         local node_above = minetest.get_node_or_nil(pos_above)
 
         

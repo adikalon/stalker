@@ -3,6 +3,8 @@
 -- https://freesound.org/people/steevamis/sounds/213955/
 
 -- ========================= STALKER ====================================================================
+local S = minetest.get_translator(minetest.get_current_modname())
+
 mobs:register_mob("stalker:stalker", {
 	type = "monster",
 	passive = false,
@@ -55,19 +57,19 @@ mobs:register_mob("stalker:stalker", {
 		--punch_start = 0,
 		--punch_end = 0,
 	},
-		
+
 
     do_custom = function(self, dtime)
         -- Verificar se há um nó específico à frente da entidade
         local pos = self.object:get_pos()
         local dir = self.object:get_velocity():normalize()
 
-        local node_pos = vector.round(vector.add(pos, vector.multiply(dir, 1)))  
+        local node_pos = vector.round(vector.add(pos, vector.multiply(dir, 1)))
         local node = minetest.get_node_or_nil(node_pos)
         local pos_above = vector.add(self.object:get_pos(), {x = 0, y = 2, z = 0})
         local node_above = minetest.get_node_or_nil(pos_above)
 
-        
+
 			        if (node and node.name ~= "air")  or (node_above and node_above.name ~= "air") then
 
 			        	minetest.after(0.5, function()
@@ -75,7 +77,7 @@ mobs:register_mob("stalker:stalker", {
 					             mobs:set_animation(self, "run")
 								       self.object:set_properties({
 					            	   collisionbox = {-0.4, -0.5, -0.4, 0.4, 0.4, 0.4},
-					        
+
 					        			})
 
 						     end)
@@ -86,7 +88,7 @@ mobs:register_mob("stalker:stalker", {
 								    	mobs:set_animation(self, "walk")
 								    	self.object:set_properties({
 					            	   	collisionbox = {-0.4, -0.5, -0.4, 0.4, 1.8, 0.4},
-					        
+
 					        			})
 
 						    	  end)
@@ -108,33 +110,39 @@ mobs:spawn({
 })
 ]]
 
+local path = minetest.get_modpath(minetest.get_current_modname())
+local input = io.open(path .. "/spawn.lua", "r")
 
-if minetest.get_modpath("mcl_core") ~= nil then
-  mobs:register_spawn("stalker:stalker", --name
-    {"mcl_core:stone","mcl_core:dirt"}, --nodes
-    7, --max_light
-    0, --min_light
-    20, --chance ( padrão 20 )
-    1, --active_object_count
-    -5 --max_height
-    ) 
- 
-end 
+if input then
+	input:close()
+	input = nil
+	dofile(path .. "/spawn.lua")
+else
+	if minetest.get_modpath("mcl_core") ~= nil then
+	mobs:register_spawn("stalker:stalker", --name
+		{"mcl_core:stone","mcl_core:dirt"}, --nodes
+		7, --max_light
+		0, --min_light
+		20, --chance ( padrão 20 )
+		1, --active_object_count
+		-5 --max_height
+		)
+
+	end
 
 
-if minetest.get_modpath("default") ~= nil then
-  mobs:register_spawn("stalker:stalker", --name
-    {"default:stone","default:cobble"}, --nodes
-    7, --max_light
-    0, --min_light
-    20, --chance ( padrão 20 )
-    1, --active_object_count
-    -10 --max_height
-    ) 
-  end 
+	if minetest.get_modpath("default") ~= nil then
+	mobs:register_spawn("stalker:stalker", --name
+		{"default:stone","default:cobble"}, --nodes
+		7, --max_light
+		0, --min_light
+		20, --chance ( padrão 20 )
+		1, --active_object_count
+		-10 --max_height
+		)
+	end
+end
 
 -- ======== EGG : ==================================================================================
 
-mobs:register_egg("stalker:stalker", "Stalker", "stalker_egg.png", 0)
-
-
+mobs:register_egg("stalker:stalker", S("Stalker"), "stalker_egg.png", 0)

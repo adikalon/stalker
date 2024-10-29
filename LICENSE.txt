@@ -15,6 +15,6 @@ OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWA
 
 -------------------------------------------------------------------------------------------------------------
 License for Textures/Models : CC-by-SA 4.0
-Copyright (c) 2023 DuckGo
+Copyright (c) 2023 DuckGo, edited by adikalon
 
 -------------------------------------------------------------------------------------------------------------
